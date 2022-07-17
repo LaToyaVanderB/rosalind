@@ -1,6 +1,7 @@
 import sys
 from stronghold import nt_list, nt_comp
 from utils import read_file
+from Bio import SeqIO
 
 
 def count_dna_nucleotides(dna_string: str) -> dict:
@@ -77,12 +78,10 @@ def complement_dna_strand(dna_string: str) -> str:
 
 
 def rabbits_and_recurrence_relations_dynamic(f1, f2, n, k):
-    print("What's up, Doc?")
     return fibo_dynamic(f1, f2, n, k)
 
 
 def rabbits_and_recurrence_relations_recursive(f1, f2, n, k):
-    print("What's up, Doc?")
     computed = {}
     return fibo_recursive(f1, f2, n, k, computed)
 
@@ -113,5 +112,19 @@ def fibo_dynamic(f1, f2, n, k):
     return total_n
 
 
+def gc_content(s):
+    return (s.count('C') + s.count('G')) / len(s) * 100
+
+def highest_gc_content_record(filename: str) -> str:
+    it = SeqIO.parse(filename, "fasta")
+    max_gc = 0
+    for r in it:
+        gc = gc_content(r.seq)
+        if gc > max_gc:
+            max_gc_record = r
+            max_gc = gc
+    max_gc_record.annotations['GC'] = max_gc
+    return max_gc_record
+
 if __name__ == "__main__":
-    sys.exit(count_dna_nucleotides_file(sys.argv[1]))
+    sys.exit(highest_gc_content_record(sys.argv[1]))

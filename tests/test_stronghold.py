@@ -2,7 +2,8 @@ from unittest import TestCase, main
 
 from stronghold import nt_list, nt_comp
 from stronghold.core import count_dna_nucleotides, count_dna_nucleotides_file, \
-    transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, rabbits_and_recurrence_relations_dynamic
+    transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, \
+    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record
 
 
 class StrongholdTestCase(TestCase):
@@ -43,6 +44,14 @@ class StrongholdTestCase(TestCase):
         self.assertEqual(rabbits_and_recurrence_relations_dynamic(1, 1, 5, 3),
                          19,
                          "fibonacci(1, 1, 5, 3) =  19")
+
+    def test_highest_gc_content_record(self):
+        record = highest_gc_content_record('../data/fasta.txt')
+        self.assertEqual(record.id,
+                         'Rosalind_0808')
+        self.assertEqual(round(record.annotations['GC'], 6),
+                         60.919540)
+
 
 if __name__ == '__main__':
     main()
