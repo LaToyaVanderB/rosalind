@@ -3,7 +3,7 @@ from unittest import TestCase, main
 from stronghold import nt_list, nt_comp
 from stronghold.core import count_dna_nucleotides, count_dna_nucleotides_file, \
     transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, \
-    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record
+    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record, hamming_distance
 
 
 class StrongholdTestCase(TestCase):
@@ -24,6 +24,11 @@ class StrongholdTestCase(TestCase):
         self.assertEqual(count_dna_nucleotides_file('../data/count_dna_nucleotides.txt'),
                          '20 12 17 21',
                          "Nucleotide counts should be: {'A': 20, 'C': 12, 'G': 17, 'T': 21}")
+
+    def test_count_dna_nucleotides_file_multiple_lines(self):
+        self.assertEqual(count_dna_nucleotides_file('../data/rosalind_hamm.txt'),
+                         '12 12 12 11\n10 15 9 13',
+                         "Nucleotide counts should be: '12 12 12 11\n10 15 9 13'")
 
     def test_transcribe_dna_into_rna(self):
         self.assertEqual(transcribe_dna_into_rna('GATGGAACTTGACTACGTAAATT'),
@@ -47,10 +52,11 @@ class StrongholdTestCase(TestCase):
 
     def test_highest_gc_content_record(self):
         record = highest_gc_content_record('../data/fasta.txt')
-        self.assertEqual(record.id,
-                         'Rosalind_0808')
-        self.assertEqual(round(record.annotations['GC'], 6),
-                         60.919540)
+        self.assertEqual(record.id, 'Rosalind_0808')
+        self.assertEqual(round(record.annotations['GC'], 6), 60.919540)
+
+    def test_hamming_distance(self):
+        self.assertEqual(hamming_distance('GAGCCTACTAACGGGAT', 'CATCGTAATGACGGCCT'), 7)
 
 
 if __name__ == '__main__':

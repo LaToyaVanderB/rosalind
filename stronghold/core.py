@@ -2,6 +2,7 @@ import sys
 from stronghold import nt_list, nt_comp
 from utils import read_file
 from Bio import SeqIO
+from itertools import zip_longest
 
 
 def count_dna_nucleotides(dna_string: str) -> dict:
@@ -36,8 +37,15 @@ def count_dna_nucleotides_file(filename: str) -> str:
         A string containing the counts for A, C, T, G, in this order, space-delimited.
     """
 
-    counts = count_dna_nucleotides(read_file(filename))
-    return " ".join([str(counts[nt]) for nt in nt_list])
+    lines = read_file(filename)
+    counts = [count_dna_nucleotides(line) for line in lines]
+
+    def flatten(counts):
+        return " ".join([str(counts[nt]) for nt in nt_list])
+    counts_flat = map(flatten, counts)
+
+    return "\n".join(counts_flat)
+
 
 
 def transcribe_dna_into_rna(dna_string: str) -> str:
@@ -124,7 +132,18 @@ def highest_gc_content_record(filename: str) -> str:
             max_gc_record = r
             max_gc = gc
     max_gc_record.annotations['GC'] = max_gc
+    print(max_gc_record.id, max_gc_record.annotations['GC'])
     return max_gc_record
 
+def hamming_distance(s1, s2):
+    dist = 0
+    if len(s1) != len(s2):
+        raise ValueError("The two input strings are expected to be of equal length")
+    for i in zip_longest(s1, s2):
+        if i[0] != i[1]:
+            dist = dist + 1
+    return dist
+
+
 if __name__ == "__main__":
-    sys.exit(highest_gc_content_record(sys.argv[1]))
+    sys.exit(count_dna_nucleotides_file(sys.argv[1]))
