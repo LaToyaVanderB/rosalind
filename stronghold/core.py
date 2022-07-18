@@ -2,7 +2,7 @@ import sys
 from stronghold import nt_list, nt_comp
 from utils import read_file
 from Bio import SeqIO
-from itertools import zip_longest
+from operator import ne
 
 
 def count_dna_nucleotides(dna_string: str) -> dict:
@@ -40,12 +40,11 @@ def count_dna_nucleotides_file(filename: str) -> str:
     lines = read_file(filename)
     counts = [count_dna_nucleotides(line) for line in lines]
 
-    def flatten(counts):
-        return " ".join([str(counts[nt]) for nt in nt_list])
+    def flatten(dict_counts):
+        return " ".join([str(dict_counts[nt]) for nt in nt_list])
     counts_flat = map(flatten, counts)
 
     return "\n".join(counts_flat)
-
 
 
 def transcribe_dna_into_rna(dna_string: str) -> str:
@@ -123,26 +122,22 @@ def fibo_dynamic(f1, f2, n, k):
 def gc_content(s):
     return (s.count('C') + s.count('G')) / len(s) * 100
 
+
 def highest_gc_content_record(filename: str) -> str:
     it = SeqIO.parse(filename, "fasta")
     max_gc = 0
+    max_gc_record = None
     for r in it:
         gc = gc_content(r.seq)
         if gc > max_gc:
             max_gc_record = r
             max_gc = gc
     max_gc_record.annotations['GC'] = max_gc
-    print(max_gc_record.id, max_gc_record.annotations['GC'])
     return max_gc_record
 
+
 def hamming_distance(s1, s2):
-    dist = 0
-    if len(s1) != len(s2):
-        raise ValueError("The two input strings are expected to be of equal length")
-    for i in zip_longest(s1, s2):
-        if i[0] != i[1]:
-            dist = dist + 1
-    return dist
+    return sum(map(ne, s1, s2))
 
 
 if __name__ == "__main__":
