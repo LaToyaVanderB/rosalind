@@ -3,7 +3,8 @@ from unittest import TestCase, main
 from stronghold import nt_list, nt_comp
 from stronghold.core import count_dna_nucleotides, count_dna_nucleotides_file, \
     transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, \
-    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record, hamming_distance
+    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record, hamming_distance, get_prob_of_dominant, \
+    mendels_first_law
 
 
 class StrongholdTestCase(TestCase):
@@ -57,6 +58,13 @@ class StrongholdTestCase(TestCase):
 
     def test_hamming_distance(self):
         self.assertEqual(hamming_distance('GAGCCTACTAACGGGAT', 'CATCGTAATGACGGCCT'), 7)
+
+    def test_mendels_first_law(self):
+        self.assertEqual(mendels_first_law(2, 2, 2), 0.78333)
+
+    def test_get_prob_of_dominant(self):
+        self.assertEqual(get_prob_of_dominant(29, 28, 25), 0.77582)
+        self.assertEqual(get_prob_of_dominant(2, 2, 2), 0.78333)
 
 
 if __name__ == '__main__':
