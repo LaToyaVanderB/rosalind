@@ -120,6 +120,42 @@ def fibo_dynamic(f1, f2, n, k):
     return total_n
 
 
+def fibonacci(n: int, k: int) -> int:
+    """
+    Fibonacci sequence:
+        We start with one pair of rabbits.
+        Rabbits need one month to become mature.
+        Mature rabbit pairs produce k new rabbit pairs every month.
+        Rabbits don´t die or stop reproducing.
+    :param n: total number of months
+    :param k: how many new pairs a mature pair produces each month
+    :return: how many pairs after n months
+    """
+    pop = [1, 1]
+    for i in range(2, n):
+        pop.append(pop[i-1] + k * pop[i-2])
+    return pop[n-1]
+
+
+def mortal_fibo(n: int, k: int, m: int) -> int:
+    """
+    Fibonacci sequence where rabbits die after m months:
+        We start with one pair of rabbits.
+        Rabbits need one month to become mature.
+        Mature rabbit pairs produce k new rabbit pairs every month.
+        Rabbits die after m months.
+
+    :param n: total number of months
+    :param k: how many new pairs a mature pair produces each month
+    :param m: how many months a pair live
+    :return: how many pairs after n months
+    """
+    pop = [1 for _ in range(m - 2)] + [1, 1, 2]
+    for i in range(4, n+1):
+        pop.append(pop[i-1] + k * pop[i-2] - pop[i-m-1])
+    return pop[n]
+
+
 def gc_content(s):
     return (s.count('C') + s.count('G')) / len(s) * 100
 
@@ -143,14 +179,14 @@ def hamming_distance(s1, s2):
 
 def mendels_first_law(k, m, n):
     """
-    Probability of at least a dominant gene at the next generation
-    :param k: number of homozygous dominant individuals
-    :param m: number of heterozygous individuals
-    :param n: number of homozygous recessive individuals
-    :return: number of offspring with a dominant allele
+        Probability of at least a dominant gene at the next generation
+        :param k: number of homozygous dominant individuals
+        :param m: number of heterozygous individuals
+        :param n: number of homozygous recessive individuals
+        :return: number of offspring with a dominant allele
 
-    THIS DOES NOT  RETURN WHAT ROSALIND WANTS
-    """
+        THIS DOES NOT  RETURN WHAT ROSALIND WANTS
+        """
     total_pop = k+m+m
     # total population
 
@@ -222,4 +258,5 @@ def get_prob_of_dominant(k, m, n):
 
 
 if __name__ == "__main__":
-    sys.exit(count_dna_nucleotides_file(sys.argv[1]))
+    # sys.exit(fibonacci(5, 3))
+    sys.exit(mortal_fibo(6, 1, 3))

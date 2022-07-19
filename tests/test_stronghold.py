@@ -4,7 +4,7 @@ from stronghold import nt_list, nt_comp
 from stronghold.core import count_dna_nucleotides, count_dna_nucleotides_file, \
     transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, \
     rabbits_and_recurrence_relations_dynamic, highest_gc_content_record, hamming_distance, get_prob_of_dominant, \
-    mendels_first_law
+    mendels_first_law, fibonacci, mortal_fibo
 
 
 class StrongholdTestCase(TestCase):
@@ -50,6 +50,17 @@ class StrongholdTestCase(TestCase):
         self.assertEqual(rabbits_and_recurrence_relations_dynamic(1, 1, 5, 3),
                          19,
                          "fibonacci(1, 1, 5, 3) =  19")
+
+    def test_fibonacci(self):
+        self.assertEqual(fibonacci(5, 3),
+                         19,
+                         "fibonacci(5, 3) =  19")
+
+    def test_mortal_fibo(self):
+        self.assertEqual(mortal_fibo(6, 1, 3),
+                         4,
+                         "mortal_fibo(6, 1, 3) =  4")
+
 
     def test_highest_gc_content_record(self):
         record = highest_gc_content_record('../data/fasta.txt')
