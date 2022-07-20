@@ -131,10 +131,13 @@ def fibonacci(n: int, k: int) -> int:
     :param k: how many new pairs a mature pair produces each month
     :return: how many pairs after n months
     """
-    pop = [1, 1]
+    current = 1
+    prev = 1
     for i in range(2, n):
-        pop.append(pop[i-1] + k * pop[i-2])
-    return pop[n-1]
+        new = current + k * prev
+        prev = current
+        current = new
+    return current
 
 
 def mortal_fibo(n: int, k: int, m: int) -> int:
@@ -150,10 +153,18 @@ def mortal_fibo(n: int, k: int, m: int) -> int:
     :param m: how many months a pair live
     :return: how many pairs after n months
     """
-    pop = [1 for _ in range(m - 2)] + [1, 1, 2]
-    for i in range(4, n+1):
-        pop.append(pop[i-1] + k * pop[i-2] - pop[i-m-1])
-    return pop[n]
+
+    # For m=3
+    pop = [1, 0, 0, 0] #F1
+    [b_t, b_t_1, b_t_2, b_t_3] = pop
+    for t in range(2, n+1):
+        b_t_3 = b_t_2
+        b_t_2 = b_t_1
+        b_t_1 = b_t
+        b_t = b_t_2 + b_t_3
+        pop = [b_t, b_t_1, b_t_2, b_t_3]
+        # print(t, pop, sum(pop[0:-1]))
+    return sum(pop[0:-1])
 
 
 def gc_content(s):
@@ -259,4 +270,5 @@ def get_prob_of_dominant(k, m, n):
 
 if __name__ == "__main__":
     # sys.exit(fibonacci(5, 3))
+    # sys.exit(mortal_fibo(89, 1, 17))
     sys.exit(mortal_fibo(6, 1, 3))
