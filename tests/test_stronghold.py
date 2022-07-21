@@ -3,7 +3,7 @@ from unittest import TestCase, main
 from stronghold import nt_list, nt_comp
 from stronghold.core import count_dna_nucleotides, count_dna_nucleotides_file, \
     transcribe_dna_into_rna, complement_dna_strand, rabbits_and_recurrence_relations_recursive, \
-    rabbits_and_recurrence_relations_dynamic, highest_gc_content_record, hamming_distance, get_prob_of_dominant, \
+    highest_gc_content_record, hamming_distance, get_prob_of_dominant, \
     mendels_first_law, fibonacci, mortal_fibo
 
 
@@ -43,11 +43,6 @@ class StrongholdTestCase(TestCase):
 
     def test_rabbits_and_recurrence_relations_recursive(self):
         self.assertEqual(rabbits_and_recurrence_relations_recursive(1, 1, 5, 3),
-                         19,
-                         "fibonacci(1, 1, 5, 3) =  19")
-
-    def test_rabbits_and_recurrence_relations_dynamic(self):
-        self.assertEqual(rabbits_and_recurrence_relations_dynamic(1, 1, 5, 3),
                          19,
                          "fibonacci(1, 1, 5, 3) =  19")
 

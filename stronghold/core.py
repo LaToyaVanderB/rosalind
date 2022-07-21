@@ -85,10 +85,6 @@ def complement_dna_strand(dna_string: str) -> str:
     return dna_string[::-1].translate(table)
 
 
-def rabbits_and_recurrence_relations_dynamic(f1, f2, n, k):
-    return fibo_dynamic(f1, f2, n, k)
-
-
 def rabbits_and_recurrence_relations_recursive(f1, f2, n, k):
     computed = {}
     return fibo_recursive(f1, f2, n, k, computed)
@@ -109,17 +105,6 @@ def fibo_recursive(f1, f2, n, k, computed):
     return res
 
 
-def fibo_dynamic(f1, f2, n, k):
-    total_n_2 = f1
-    total_n_1 = f2
-    total_n = 0
-    for months in range(1, n-1):
-        total_n = total_n_1 + k * total_n_2
-        total_n_2 = total_n_1
-        total_n_1 = total_n
-    return total_n
-
-
 def fibonacci(n: int, k: int) -> int:
     """
     Fibonacci sequence:
@@ -131,13 +116,15 @@ def fibonacci(n: int, k: int) -> int:
     :param k: how many new pairs a mature pair produces each month
     :return: how many pairs after n months
     """
-    current = 1
-    prev = 1
-    for i in range(2, n):
-        new = current + k * prev
-        prev = current
-        current = new
-    return current
+    total_n_2 = 1
+    total_n_1 = 1
+    total_n = 0
+    for months in range(1, n-1):
+        total_n = total_n_1 + k * total_n_2
+        total_n_2 = total_n_1
+        total_n_1 = total_n
+    return total_n
+
 
 
 def mortal_fibo(n: int, k: int, m: int) -> int:
@@ -154,15 +141,13 @@ def mortal_fibo(n: int, k: int, m: int) -> int:
     :return: how many pairs after n months
     """
 
-    # For m=3
-    pop = [1, 0, 0, 0] #F1
-    [b_t, b_t_1, b_t_2, b_t_3] = pop
+    t = 1
+    pop = [1] + [0]*m #F1
+    # print(t, pop, sum(pop[0:-1]))
     for t in range(2, n+1):
-        b_t_3 = b_t_2
-        b_t_2 = b_t_1
-        b_t_1 = b_t
-        b_t = b_t_2 + b_t_3
-        pop = [b_t, b_t_1, b_t_2, b_t_3]
+        pop = pop[:-1]
+        new_b_t = sum(pop[1:])
+        pop = [new_b_t] + pop
         # print(t, pop, sum(pop[0:-1]))
     return sum(pop[0:-1])
 
@@ -270,5 +255,5 @@ def get_prob_of_dominant(k, m, n):
 
 if __name__ == "__main__":
     # sys.exit(fibonacci(5, 3))
-    # sys.exit(mortal_fibo(89, 1, 17))
-    sys.exit(mortal_fibo(6, 1, 3))
+    sys.exit(mortal_fibo(100, 1, 16))
+    # sys.exit(mortal_fibo(6, 1, 3))
